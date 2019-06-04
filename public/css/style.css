@@ -1,0 +1,14 @@
+/* body { font-family: Georgia, Cambria, "Times New Roman", Times, serif !important; } */
+
+#news-title { margin: 2rem 0; }
+
+#text {
+  font-size: 1.3rem;
+  line-height: 2rem;
+}
+
+#text p { margin-top: 2rem; }
+
+main article { margin: 1rem 0; }
+
+.news { margin-bottom: 2rem; }
