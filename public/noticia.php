@@ -9,7 +9,7 @@
   <title>Visualizando notícia</title>
 </head>
 <body>
-  <?php include '../config/database.php' ?>
+  <?php include '../config/session_start.php' ?>
   <?php include '../model/noticia.php' ?>
   <?php include 'shared/navbar.php' ?>
   <?php
@@ -32,7 +32,8 @@
             <div class="media-content">
               <div class="content">
                 <p>
-                  <?php echo $noticia['autor']; ?> <a class="tag is-black">Link para autor</a>
+                  <?php echo $noticia['usuario_id']; ?> 
+                  <a class="tag is-black">Link para autor</a>
                   <br>
                   <small>Descrição do autor</small>
                 </p>

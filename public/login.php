@@ -9,30 +9,20 @@
   <title>Login</title>
 </head>
 <body>
-  <?php include '../config/database.php' ?>
-  <?php include '../config/session.php' ?>
+  <?php include '../config/session_start.php' ?>
   <?php include '../config/auth.php' ?>
   <?php include 'shared/navbar.php' ?>
 
   <?php
-    
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $_SESSION['login'] = $_POST['login'];
-        $_SESSION['senha'] = $_POST['senha'];
-        $_SESSION['logged'] = true;
         $auth = new Auth();
-        if($auth->autenticar($_SESSION['login'], $_SESSION['senha'])) {
-          header( 'location: criar_noticia.php');
+        if($auth->autenticar($_POST['login'], $_POST['senha'])) {
+          header('location: criar_noticia.php');
+          $_SESSION['login'] = $_POST['login'];
         } else {
-          header( 'location: index.php');
+          header('location: index.php');
         };
-    } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        // TODO: Create a session logic
-    } else {
-      // 
     }
-    
-
   ?>
   <div class="container">
     <div class="columns is-desktop">
@@ -47,8 +37,7 @@
           <br>
           <button class="button is-primary" type="submit">Enviar</button>
         </form>
-        <?php } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {}
-        ?>
+        <?php } ?>
         
       </div>
     </div>

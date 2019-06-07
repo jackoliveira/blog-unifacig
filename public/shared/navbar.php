@@ -23,8 +23,14 @@
         </div>
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-light" href="login.php">
-              <strong>Log in</strong>
+              <strong><?php
+                if (isset($_SESSION['login']) == true) {
+                  echo "<form action=\"../config/session_destroy.php\"><button class=\"button is-light\" type=\"submit\">Log out</button></form>";
+                } else {
+                  echo "<a class=\"button is-light\" href=\"login.php\">Log in</a>";
+                }
+              ?>
+              </strong>
             </a>
           </div>
         </div>

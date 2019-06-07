@@ -9,11 +9,12 @@
   <title>Criação de Notícias</title>
 </head>
 <body>
-  <?php include '../config/database.php' ?>
+  <?php include '../config/session_start.php' ?>
+  <?php include '../config/session.php' ?>
   <?php include '../model/noticia.php' ?>
   <?php include 'shared/navbar.php' ?>
   <?php
-    $noticia = new Noticia();
+      $noticia = new Noticia();
   ?>
   <div class="container">
     <div class="columns is-desktop">
