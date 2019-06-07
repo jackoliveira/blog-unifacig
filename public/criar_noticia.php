@@ -28,11 +28,11 @@
           <textarea class="textarea" type="text" name="texto" rows="2"></textarea>
           <label for="autor">Autor</label>
           <!-- TODO: Current user as Autor -->
-          <input class="input" type="text" name="autor" placeholder="current user">
+          <input class="input" type="text" value="<?php echo $_SESSION['nome'] ?>" disabled>
           <label for="publicado_em">Publicado em</label>
           <input class="input" type="date" name="publicado_em">
           <label for="status">Status</label>
-          <input type="checkbox" name="status" value="true" checked>
+          <input type="checkbox" name="status" value="publicado" checked>
           <br>
           <!-- TODO: Upload of Photos -->
           <label for="foto">Foto</label>
@@ -43,11 +43,13 @@
         </form>
         <?php } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           if($noticia->criar(
-            $_POST['autor'], $_POST['titulo'],
+            $_SESSION['id'], $_POST['titulo'],
             $_POST['texto'], $_POST['foto'],
             $_POST['publicado_em'], $_POST['status'])
             ) { echo "<h1>Noticia Criada com sucesso</h1>"; }
-            else { echo "<h1>Ocorreram erros na criacao da Noticia.</h1>"; }
+            else { echo "<h1>Ocorreram erros na criacao da Noticia.</h1>"; 
+              echo $_SESSION['id']." ".$_POST['titulo']." ".$_POST['texto']." ".$_POST['foto']." ".$_POST['publicado_em']." ".$_POST['status'];
+            }
           }
         ?>
       </div>

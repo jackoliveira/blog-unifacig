@@ -11,7 +11,7 @@ class Noticia {
   public $foto;
 
   public function __construct(){
-    $this->pdo = new PDO("mysql:host=localhost;dbname=blog_grupo3", "root", "");
+    $this->pdo = new PDO("mysql:host=localhost;dbname=blog_grupo3", "root", "", array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
   }
 
   public function listar(){
@@ -26,7 +26,6 @@ class Noticia {
   }
 
   public function consultar($id){
-    
     $query = "SELECT * FROM noticia WHERE noticia.id = :id";
     $query = $this->pdo->prepare($query);
     $query->bindValue(':id', $id);
@@ -43,13 +42,18 @@ class Noticia {
       VALUES ( :autor, :titulo, :texto, :foto, :publicado_em, :status)";
       
     $query = $this->pdo->prepare($query);
-    $query->bindValue(':titulo', $titulo);
     $query->bindValue(':autor', $autor);
+    $query->bindValue(':titulo', $titulo);
     $query->bindValue(':texto', $texto);
     $query->bindValue(':foto', $foto);
     $query->bindValue(':publicado_em', $publicado_em);
     $query->bindValue(':status', $status);
-    $query->execute();
+    if($query->execute()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
+
 ?>

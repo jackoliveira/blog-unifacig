@@ -1,6 +1,6 @@
 <?php
 
-class Usuario{
+class Usuario {
 
   public $id;
   public $nome;
@@ -11,7 +11,7 @@ class Usuario{
   public $status;
 
   public function __construct(){
-    $this->pdo = new PDO("mysql:host=localhost;dbname=blog_grupo3", "root", "");
+    $this->pdo = new PDO("mysql:host=localhost;dbname=blog_grupo3", "root", "", array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
   }
 
   public function set_senha($senha){

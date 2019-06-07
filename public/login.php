@@ -18,7 +18,6 @@
         $auth = new Auth();
         if($auth->autenticar($_POST['login'], $_POST['senha'])) {
           header('location: criar_noticia.php');
-          $_SESSION['login'] = $_POST['login'];
         } else {
           header('location: index.php');
         };
