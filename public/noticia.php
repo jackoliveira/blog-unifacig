@@ -32,7 +32,7 @@
             <div class="media-content">
               <div class="content">
                 <p>
-                  <?php echo $noticia['usuario_id']; ?> 
+                  <?php echo $noticia['nome']; ?> 
                   <a class="tag is-black">Link para autor</a>
                   <br>
                   <small>Descrição do autor</small>

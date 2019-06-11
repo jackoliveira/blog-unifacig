@@ -15,25 +15,27 @@ class Noticia {
   }
 
   public function listar(){
-      $query = "SELECT * FROM noticia;";
-			$query = $this->pdo->query($query);
-			
-			if($query->rowCount() > 0){
-				return $query -> fetchAll();
-			} else {
-				return array();
-			}
+    $query = "SELECT noticia.id, noticia.titulo, noticia.texto, noticia.foto, usuario.nome
+    FROM noticia INNER JOIN usuario ON noticia.usuario_id = usuario.id
+    ORDER BY noticia.publicado_em DESC LIMIT 10";
+    $query = $this->pdo->query($query);
+    
+    if($query->rowCount() > 0){
+      return $query->fetchAll();
+    } else {
+      return array();
+    }
   }
 
   public function consultar($id){
-    $query = "SELECT * FROM noticia WHERE noticia.id = :id";
+    $query = "SELECT noticia.titulo, noticia.texto, noticia.foto, usuario.nome, noticia.publicado_em
+    FROM noticia RIGHT JOIN usuario ON noticia.usuario_id = usuario.id WHERE noticia.id = :id";
     $query = $this->pdo->prepare($query);
     $query->bindValue(':id', $id);
     $query->execute();
     
     if($query->rowCount() > 0){
-      $info = $query -> fetch();
-      return $info;
+      return $query->fetch();
     } else { return array(); }
   }
 

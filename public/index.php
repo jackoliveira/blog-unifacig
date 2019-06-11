@@ -42,7 +42,7 @@
                   echo "<div>";
                   echo "<p class='title'><a href='noticia.php?id=", base64_encode($item['id']) ,"'>".substr($item['titulo'], 0, 30)."</a></p>";
                   echo "<p class='subtitle'>".substr($item['texto'], 0, 50)."</p>";
-                  echo "<p class='subtitle'>".$item['usuario_id']."</p>";
+                  echo "<p class='subtitle'>".$item['nome']."</p>";
                   echo "</div>";
                 echo "</article>";
               echo "</div>";
