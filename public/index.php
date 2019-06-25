@@ -27,7 +27,7 @@
 </head>
 <body>
   <?php include '../config/session_start.php' ?>
-  <?php include '../model/noticia.php' ?>
+  <?php include '../model/noticia.class.php' ?>
   <?php include 'shared/navbar.php' ?>
   
     <div class="container" id="noticias">
@@ -38,17 +38,16 @@
           foreach ($noticias as $item) {
             if ($counter == 1) { echo "<div class='tile is-ancestor'>"; }
               echo "<div class='tile is-parent'>";
-                echo "<article class='tile is-child notification noticia' style='background-image: url(\"".$item['foto']."\");'>";
+                echo "<article class='tile is-child notification noticia' style='background-image: url(\"".$item['foto_caminho']."\");'>";
                   echo "<div>";
-                  echo "<p class='title'><a href='noticia.php?id=", base64_encode($item['id']) ,"'>".substr($item['titulo'], 0, 30)."</a></p>";
-                  echo "<p class='subtitle'>".substr($item['texto'], 0, 50)."</p>";
-                  echo "<p class='subtitle'>".$item['nome']."</p>";
+                  echo "<p class='title'><a href='noticia.php?id=", base64_encode($item['noticia_id']) ,"'>".substr($item['noticia_titulo'], 0, 30)."</a></p>";
+                  echo "<p class='subtitle'>".substr($item['noticia_texto'], 0, 50)."</p>";
+                  echo "<p class='subtitle'>".$item['usuario_nome']."</p>";
                   echo "</div>";
                 echo "</article>";
               echo "</div>";
               if ($counter % 4 == 0) { echo "</div>"; $counter = 1;} else { $counter++; }
           }
-
 
             ?>
           </div>

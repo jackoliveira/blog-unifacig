@@ -1,5 +1,6 @@
--- Criar o banco de dados "blog_grupo3"
--- Importar este arquivo ou apenas copiar e colar no PHPMyAdmin na tab SQL no banco "blog_grupo3"
+CREATE DATABASE blog_grupo3
+  CHARACTER SET utf8
+  COLLATE utf8_general_ci;
 
 CREATE TABLE `usuario` (
   `id` int(8) NOT NULL PRIMARY KEY auto_increment,
@@ -21,28 +22,25 @@ CREATE TABLE `noticia` (
   FOREIGN KEY (usuario_id) REFERENCES usuario(id),
   `titulo` varchar(200) NOT NULL,
   `texto` varchar(1000) NOT NULL,
-  `foto` varchar(200) NOT NULL,
   `publicado_em` varchar(200) NOT NULL,
   `status` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `noticia` (`titulo`, `texto`, `usuario_id`, `publicado_em`, `foto`, `status`) VALUES ('Governo diminui participação da sociedade civil no Conselho Nacional do Meio Ambiente', 'Número de integrantes do Conama, conselho que discute normas do Sistema Nacional do Meio Ambiente, diminui 76% com o decreto publicado nesta quarta-feira (29). Participação do governo aumenta e de ONGs diminui.', 1, '09-12-1995', 'images/golfinho.jpg',  'publicado');
-INSERT INTO `noticia` (`titulo`, `texto`, `usuario_id`, `publicado_em`, `foto`, `status`) VALUES ('Revogar Estação Tamoios exige ato do Congresso, e mudança via decreto será inconstitucional, dizem juristas', 'inui.', 2, '09-12-1995', 'images/golfinho.jpg',  'publicado');
-INSERT INTO `noticia` (`titulo`, `texto`, `usuario_id`, `publicado_em`, `foto`, `status`) VALUES ('Governo diminui particip', 'Número', 3, '09-12-1900', 'images/galaxia-espiral.jpg', 'pendente');
+INSERT INTO `noticia` (`titulo`, `texto`, `usuario_id`, `publicado_em`, `status`) VALUES ('Governo diminui participação da sociedade civil no Conselho Nacional do Meio Ambiente', 'Número de integrantes do Conama, conselho que discute normas do Sistema Nacional do Meio Ambiente, diminui 76% com o decreto publicado nesta quarta-feira (29). Participação do governo aumenta e de ONGs diminui.', 1, '09-12-1995', 'publicado');
+INSERT INTO `noticia` (`titulo`, `texto`, `usuario_id`, `publicado_em`, `status`) VALUES ('Revogar Estação Tamoios exige ato do Congresso, e mudança via decreto será inconstitucional, dizem juristas', 'inui.', 2, '09-12-1995', 'publicado');
+INSERT INTO `noticia` (`titulo`, `texto`, `usuario_id`, `publicado_em`, `status`) VALUES ('Governo diminui particip', 'Número', 3, '09-12-1900', 'pendente');
 
 CREATE TABLE `foto` (
   `id` int(8) NOT NULL PRIMARY KEY auto_increment,
   `noticia_id` int(8) NOT NULL,
   FOREIGN KEY (noticia_id) REFERENCES noticia(id),
   `nome` varchar(200) NOT NULL,
-  `caminho` varchar(200) NOT NULL
+  `caminho` varchar(200) DEFAULT 'images/default_photo.jpg' -- NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- TODO: Criar identificador unico para o nome da foto.
--- TODO: Definir caminho padrao para as fotos do servidor EX: `/srv/blog-unifacig/media/images`
-INSERT INTO `foto` (`noticia_id`, `nome`, `caminho`) VALUES (1, 'golfinho', 'golfinho.png');
-INSERT INTO `foto` (`noticia_id`, `nome`, `caminho`) VALUES (2, 'lula-preso', 'lula-preso.jpeg');
-INSERT INTO `foto` (`noticia_id`, `nome`, `caminho`) VALUES (3, 'harry-potter', 'harry-potter.jpg');
+INSERT INTO `foto` (`noticia_id`, `nome`) VALUES (1, 'default');
+INSERT INTO `foto` (`noticia_id`, `nome`) VALUES (2, 'default');
+INSERT INTO `foto` (`noticia_id`, `nome`) VALUES (3, 'default');
 
 CREATE TABLE `comentario` (
   `id` int(8) NOT NULL PRIMARY KEY auto_increment,

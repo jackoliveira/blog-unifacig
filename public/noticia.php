@@ -10,7 +10,7 @@
 </head>
 <body>
   <?php include '../config/session_start.php' ?>
-  <?php include '../model/noticia.php' ?>
+  <?php include '../model/noticia.class.php' ?>
   <?php include 'shared/navbar.php' ?>
   <?php
       $noticia = new Noticia();
@@ -21,7 +21,7 @@
       <div class="column is-three-fifths is-offset-one-fifth is-column-mobile">
         <main>
           <h1 class="title is-2 has-text-weight-normal" id="news-title">
-          <?php echo $noticia['titulo']; ?>
+          <?php echo $noticia['noticia_titulo']; ?>
           </h1>
           <article class="media">
             <figure class="media-left">
@@ -32,7 +32,7 @@
             <div class="media-content">
               <div class="content">
                 <p>
-                  <?php echo $noticia['nome']; ?> 
+                  <?php echo $noticia['usuario_nome']; ?> 
                   <a class="tag is-black">Link para autor</a>
                   <br>
                   <small>Descrição do autor</small>
@@ -40,18 +40,27 @@
               </div>
             </div>
           </article>
-
-
-        
         </main>
         <section id="text">
           <figure class="image">
-            <img src="<?php echo $noticia['foto']; ?>" alt="test">
+            <img src="<?php echo $noticia['foto_caminho']; ?>" alt="test">
           </figure>
           <p>
-            <?php echo $noticia['texto']; ?>
+            <?php echo $noticia['noticia_texto']; ?>
           </p>
         </section>
+        <hr>
+        <?php if ($noticia['comentario_conteudo'] && $noticia['comentario_autor']) { ?>
+          <?php if(true) { ?>
+          <article class="message is-dark">
+            <div class="message-body">
+              <strong><?php echo $noticia['comentario_autor']; ?></strong>
+              <br>
+              <?php echo $noticia['comentario_conteudo']; ?>
+            </div>
+          </article>
+          <?php } ?>
+        <?php } else { echo "Zero comments here."; }  ?>
       </div>
     </div>
   </div>

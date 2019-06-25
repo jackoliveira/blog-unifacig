@@ -11,46 +11,49 @@
 <body>
   <?php include '../config/session_start.php' ?>
   <?php include '../config/session.php' ?>
-  <?php include '../model/noticia.php' ?>
+  <?php include '../model/noticia.class.php' ?>
+  <?php include '../model/foto.class.php' ?>
   <?php include 'shared/navbar.php' ?>
   <?php
       $noticia = new Noticia();
+      $foto = new Foto();
   ?>
   <div class="container">
     <div class="columns is-desktop">
       <div class="column is-three-fifths is-offset-one-fifth is-column-mobile">
         <?php if ($_SERVER['REQUEST_METHOD'] == 'GET') { ?>
         <h1 class="title">Criação da Notícia</h1>
-        <form action="criar_noticia.php" method="post">
+        <form action="criar_noticia.php" method="post" enctype="multipart/form-data">
           <label for="titulo">Título</label>
           <input class="input" type="text" name="titulo">
           <label for="texto">Texto</label>
           <textarea class="textarea" type="text" name="texto" rows="2"></textarea>
           <label for="autor">Autor</label>
-          <!-- TODO: Current user as Autor -->
           <input class="input" type="text" value="<?php echo $_SESSION['nome'] ?>" disabled>
           <label for="publicado_em">Publicado em</label>
           <input class="input" type="date" name="publicado_em">
           <label for="status">Status</label>
           <input type="checkbox" name="status" value="publicado" checked>
           <br>
-          <!-- TODO: Upload of Photos -->
           <label for="foto">Foto</label>
-          <input class="input" type="text" name="foto"><br>
+          <input type="file" name="foto"><br>
           <br>
           <button class="button is-primary" type="submit">Enviar</button>
 
         </form>
         <?php } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-          if($noticia->criar(
-            $_SESSION['id'], $_POST['titulo'],
-            $_POST['texto'], $_POST['foto'],
-            $_POST['publicado_em'], $_POST['status'])
-            ) { echo "<h1>Noticia Criada com sucesso</h1>"; }
-            else { echo "<h1>Ocorreram erros na criacao da Noticia.</h1>"; 
-              echo $_SESSION['id']." ".$_POST['titulo']." ".$_POST['texto']." ".$_POST['foto']." ".$_POST['publicado_em']." ".$_POST['status'];
-            }
-          }
+          try { 
+            $noticiaId = $noticia->criar($_SESSION['id'], $_POST['titulo'],
+                            $_POST['texto'], $_POST['publicado_em'],
+                            $_POST['status']);
+            if($_FILES['foto']) {
+              $foto->criar($noticiaId, $_FILES['foto']);
+            } else {
+              $foto->criarDefault($noticiaId);
+            }            
+            echo "<h1>Noticia Criada com sucesso</h1>";
+          } catch (Exception $e) { die("asdads"); }
+        }
         ?>
       </div>
     </div>
