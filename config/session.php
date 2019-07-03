@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_SESSION['login']) == true) {
+if (isset($_SESSION['login'])) {
 } else { header('location: login.php'); }
 
 ?>

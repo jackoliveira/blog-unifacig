@@ -40,7 +40,7 @@ class Noticia {
                  WHERE noticia.id = :id";
     
     $query = $this->pdo->prepare($query);
-    $query->bindValue(':id', $id);                                                    
+    $query->bindValue(':id', $id);                                                
     $query->execute();
     
     if($query->rowCount() > 0){

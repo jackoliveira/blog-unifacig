@@ -2,6 +2,8 @@ CREATE DATABASE blog_grupo3
   CHARACTER SET utf8
   COLLATE utf8_general_ci;
 
+USE blog_grupo3;
+
 CREATE TABLE `usuario` (
   `id` int(8) NOT NULL PRIMARY KEY auto_increment,
   `nome` varchar(50) NOT NULL,
@@ -54,3 +56,14 @@ CREATE TABLE `comentario` (
 INSERT INTO `comentario` (`noticia_id`, `autor`, `conteudo`, `publicado_em`) VALUES (1, 'N00BM45T3R', 'JKQEWWas', '20-05-2019 00:00:01');
 INSERT INTO `comentario` (`noticia_id`, `autor`, `conteudo`, `publicado_em`) VALUES (2, 'Fulano', 'ASDYAUSIDKas', '20-05-2019 00:00:01');
 INSERT INTO `comentario` (`noticia_id`, `autor`, `conteudo`, `publicado_em`) VALUES (3, 'oiuyyuio', 'ATDSYBASND', '20-05-2019 00:00:01');
+
+CREATE TABLE `curtida` (
+  `id` int(8) NOT NULL PRIMARY KEY auto_increment,
+  `noticia_id` int(8) NOT NULL,
+  FOREIGN KEY (noticia_id) REFERENCES noticia(id),
+  `quantidade` int(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `curtida` (`noticia_id`, `quantidade`) VALUES (1, 54);
+INSERT INTO `curtida` (`noticia_id`, `quantidade`) VALUES (2, 35);
+INSERT INTO `curtida` (`noticia_id`, `quantidade`) VALUES (3, 125);
