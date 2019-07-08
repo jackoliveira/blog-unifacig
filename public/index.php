@@ -27,21 +27,16 @@
                 echo "<article class='tile is-child notification noticia' style='background-image: url(\"".$item['foto_caminho']."\");'>";
                   echo "<div>";
                   echo "<p class='title'><a href='noticia.php?id=", base64_encode($item['noticia_id']) ,"'>".substr($item['noticia_titulo'], 0, 30)."</a></p>";
-                  echo "<p class='subtitle'>".substr($item['noticia_texto'], 0, 50)."</p>";
                   echo "<p class='subtitle'>".$item['usuario_nome']."</p>";
                   echo "</div>";
                 echo "</article>";
               echo "</div>";
             if ($counter % 3 == 0) { echo "</div>"; $counter = 1;} else { $counter++; }
           }
-
-            ?>
+        ?>
           </div>
       </div>
     </div>
-    <button class="button is-danger" onclick="window.scroll({ top: 0, left: 0, behavior: 'smooth' }); alert('TOPO');"><span class="icon">
-  <i class="fas fa-home"></i>
-</span></button>
   <?php include 'shared/footer.php' ?>
 
 </body>

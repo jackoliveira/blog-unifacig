@@ -22,37 +22,50 @@
       $comentarios = new Comentario();
       $comentarios = $comentarios->listar($noticia['noticia_id']);
       $curtida = new Curtida();
-      $curtida = $curtida->consultar($noticia['noticia_id']);
+      $curtida_quantidade = $curtida->consultar($noticia['noticia_id']);
   ?>
   <div class="container">
     <div class="columns is-desktop">
       <div class="column is-three-fifths is-offset-one-fifth is-column-mobile">
-      <?php 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && ($_POST['autor'] && $_POST['comentario'])) {
+      <?php
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && (isset($_POST['autor']) && isset($_POST['comentario']))) {
           $comentario = new Comentario();
           try {
             $comentario->criar($noticia['noticia_id'], $_POST['autor'], $_POST['comentario']);
             header("Location: noticia.php?id=.".$_GET['id']);
           } catch (Exception $e) { die($e); }
+        } else if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['curtida'])) {
+          try { $curtida->adicionar($noticia['noticia_id']);
+                unset($_POST['curtida']);
+          }
+          catch (Exception $e) { die($e); }
         }
       ?>
         <main>
+          <?php
+            if (isset($_SESSION['login'])) {
+              echo "<div class='columns'>";
+                echo "<div class='column'>";
+                  echo "<a class='is-pulled-right button is-danger' href='editar_noticia.php?id=", base64_encode($noticia['noticia_id']) ,"'>Editar noticia</a>";
+                echo "</div>";
+              echo "</div>";
+            }
+          ?>
           <h1 class="title is-2 has-text-weight-normal" id="news-title">
             <?php echo $noticia['noticia_titulo']; ?>
           </h1>
           <article class="media">
             <figure class="media-left">
               <p class="image is-64x64">
-                <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                <img class="is-rounded" src="https://avatars2.githubusercontent.com/u/24421161?s=460&v=4">
               </p>
             </figure>
             <div class="media-content">
               <div class="content">
                 <p>
-                  <?php echo $noticia['usuario_nome']; ?> 
-                  <a class="tag is-black">Link para autor</a>
+                  <strong class="is-family-sans-serif"><?php echo $noticia['usuario_nome']; ?></strong>
                   <br>
-                  <small>Descrição do autor</small>
+                  <small><?php echo $noticia['usuario_descricao']; ?></small>
                 </p>
               </div>
             </div>
@@ -67,13 +80,18 @@
           </p>
         </section>
         <div class="likes">
-          <span class="icon">
-            <a href="#"><i class="far fa-thumbs-up"></i></a>
-          </span>
-          <span class="likes-text">
-            <?php echo $curtida['curtida_quantidade']; ?>
-            likes
-          </span>
+          <?php if ($_SERVER['REQUEST_METHOD'] == 'GET') { ?>
+            <span class="icon" id="like-button">
+              <form action="noticia.php?id=<?php echo $_GET['id']; ?>" method="POST" id="like-form">
+                <i class="far fa-thumbs-up"></i>
+                <input type="hidden" name="curtida" value="curtida">
+              </form>
+            </span>
+            <span class="likes-text">
+              <?php if(isset($curtida_quantidade['curtida_quantidade'])) { echo $curtida_quantidade['curtida_quantidade']; } ?>
+              likes
+            </span>
+          <?php } else { echo "Curtida computada"; } ?>
         </div>
         <hr>
         <form action="noticia.php?id=<?php echo $_GET['id']; ?>" method="POST">
@@ -89,7 +107,7 @@
               <textarea class="textarea" placeholder="Lorem Ipsum..." name="comentario"></textarea>
             </div>
           </div>
-          <input class="button is-link" type="submit" value="Submit">
+          <input class="button is-link" type="submit" value="Enviar Comentário">
         </form>
         <?php if (count($comentarios) > 0) {
           echo "<p id='comments-title'><strong>Comentarios:</strong></p>";
@@ -97,7 +115,8 @@
         ?>
           <div class="comment-box">
             <div class="comment-header">
-              <span><?php echo $comentario['comentario_autor']; ?></span>
+              <span class="is-family-sans-serif"><?php echo $comentario['comentario_autor']; ?></span>
+              <p class="date"><?php echo date("d/m/Y", strtotime($comentario['comentario_publicado_em'])); ?></p>
             </div>
             <div class="comment-body">
               <?php echo $comentario['comentario_conteudo']; ?>
@@ -110,6 +129,6 @@
     </div>
   </div>
   <?php include 'shared/footer.php' ?>
-
+  <script src="js/application.js"></script>
 </body>
 </html>

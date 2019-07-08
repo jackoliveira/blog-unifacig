@@ -25,7 +25,7 @@ class Curtida {
   }
 
   public function adicionar($noticia_id) {
-    $query = "UPDATE curtida SET quantidade = quantidade + 1 WHERE noticia.id = :noticia_id";
+    $query = "UPDATE curtida SET curtida.quantidade = curtida.quantidade + 1 WHERE curtida.noticia_id = :noticia_id";
     $query = $this->pdo->prepare($query);
     $query->bindValue(':noticia_id', $noticia_id);
     

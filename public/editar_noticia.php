@@ -19,18 +19,19 @@
   <?php include 'shared/navbar.php' ?>
   <?php
       $noticia = new Noticia();
-      $foto = new Foto();
+      $noticia_get = $noticia->consultar(base64_decode($_GET['id']));
   ?>
+
   <div class="container">
     <div class="columns is-desktop">
       <div class="column is-three-fifths is-offset-one-fifth is-column-mobile">
         <?php if ($_SERVER['REQUEST_METHOD'] == 'GET') { ?>
-        <h1 class="title">Criação da Notícia</h1>
-        <form action="criar_noticia.php" method="post" enctype="multipart/form-data">
+        <h1 class="title">Editar Notícia</h1>
+        <form action="editar_noticia.php?id=<?php echo $_GET['id']; ?>" method="POST" enctype="multipart/form-data">
           <div class="field">
-            <label class="label" for="titulo">Titulo</label>
+            <label class="label" for="titulo">Título</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Titulo" name="titulo" required>
+              <input class="input" type="text" placeholder="Título" name="titulo" value="<?php echo $noticia_get['noticia_titulo']; ?>" required>
             </div>
             
           </div>
@@ -38,7 +39,9 @@
             <label class="label" for="texto">Texto</label>
             <div class="control">
               <input type="hidden" class="input" name="texto" id="texto">
-              <div id="editor" onkeyup="quillHandler()"></div>
+              <div id="editor" onkeyup="quillHandler()">
+                <?php echo $noticia_get['noticia_texto']; ?>
+              </div>
             </div>
           </div>
           <div class="columns">
@@ -54,7 +57,8 @@
               <div class="field">
                 <label class="label" for="publicado_em" >Publicado em</label>
                 <div class="control">
-                  <input class="input" type="datetime-local" name="publicado_em" required>
+                  <input class="input" type="text" name="publicado_em" value="<?php echo $noticia_get['noticia_publicado_em']; ?>" disabled>
+                  <small>Data anterior: <?php echo date("d/m/Y", strtotime($noticia_get['noticia_publicado_em'])) ?></small>
                 </div>
               </div>
             </div>
@@ -65,7 +69,6 @@
                 <label class="label" for="foto">Foto</label>
                 <div class="control">
                   <input type="file" name="foto"><br>
-                  <small>Se nenhuma foto for selecionada, <br>nós colocaremos uma padrão.</small>
                 </div>
               </div>
             </div>
@@ -74,7 +77,7 @@
                 <label class="label" for="status">Status</label>
                 <div class="control">
                   <span>Publicado</span>
-                <input type="checkbox" name="status" value="publicado" checked>
+                <input type="checkbox" name="status" value="<?php echo $noticia_get['noticia_status']?>" checked>
                 </div>
               </div>
             </div>
@@ -84,16 +87,12 @@
         <?php } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           try {
             if(!isset($_POST['status'])) { $_POST['status'] = false; }
-            $noticiaId = $noticia->criar($_SESSION['id'], $_POST['titulo'],
-                            $_POST['texto'], $_POST['publicado_em'],
-                            $_POST['status']);
-            if($_FILES['foto']['error'] == 0) {
-              $foto->criar($noticiaId, $_FILES['foto']);
-            } else {
-              $foto->criarDefault($noticiaId);
-            }
-            echo "<article class=\"message is-success is-small\"><div class=\"message-body\">Notícia criada com sucesso!</div></article>";
-          } catch (Exception $e) { die("error"); }
+            if(!isset($_POST['publicado_em'])) { $_POST['publicado_em'] = $noticia_get['noticia_publicado_em']; }
+            echo $_POST['texto'];
+            $noticiaId = $noticia->editar($noticia_get['noticia_id'], $_SESSION['id'], $_POST['titulo'], $_POST['texto'], $_POST['publicado_em'], $_POST['status']);
+            if($_FILES['foto']['error'] == 0) { $foto->criar($noticiaId, $_FILES['foto']); }
+            echo "<article class=\"message is-success is-small\"><div class=\"message-body\">Notícia".$noticiaId."atualizada com sucesso!</div></article>";
+          } catch (PDOException $e) { echo $e; }
         }
         ?>
       </div>
@@ -122,8 +121,10 @@
     theme: 'snow'
   });
   function quillHandler() {
-    let texto = document.querySelector('input[name=texto]').value = quill.root.innerHTML;
+    document.querySelector('input[name=texto]').value = quill.root.innerHTML;
+    console.log(document.querySelector('input[name=texto]').value)
   };
+  quillHandler();
   </script>
 
   <?php include 'shared/footer.php' ?>
